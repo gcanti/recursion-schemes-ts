@@ -1,0 +1,54 @@
+import { Functor } from 'fp-ts/lib/Functor'
+
+declare module 'fp-ts/lib/HKT' {
+  interface URI2HKT2<L, A> {
+    Tree: TreeF<L, A>
+  }
+}
+
+export const URI = 'Tree'
+
+export type URI = typeof URI
+
+export class Empty<A, R> {
+  static value = new Empty<any, any>()
+  readonly _tag: 'Empty' = 'Empty'
+  readonly _A: R
+  readonly _L: A
+  readonly _URI: URI
+  private constructor() {}
+  map<B>(f: (a: R) => B): TreeF<A, B> {
+    return this as any
+  }
+}
+
+export class Leaf<A, R> {
+  readonly _tag: 'Leaf' = 'Leaf'
+  readonly _A: R
+  readonly _L: A
+  readonly _URI: URI
+  constructor(public value: A) {}
+  map<B>(f: (a: R) => B): TreeF<A, B> {
+    return this as any
+  }
+}
+
+export class Node<A, R> {
+  readonly _tag: 'Node' = 'Node'
+  readonly _A: R
+  readonly _L: A
+  readonly _URI: URI
+  constructor(public left: R, readonly right: R) {}
+  map<B>(f: (a: R) => B): TreeF<A, B> {
+    return new Node(f(this.left), f(this.right))
+  }
+}
+
+export type TreeF<A, R> = Empty<A, R> | Leaf<A, R> | Node<A, R>
+
+export const functorTree: Functor<URI> = {
+  URI,
+  map<L, A, B>(f: (a: A) => B, fa: TreeF<L, A>): TreeF<L, B> {
+    return fa.map(f)
+  }
+}

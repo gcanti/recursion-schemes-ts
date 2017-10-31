@@ -2,6 +2,7 @@ Features:
 
 - catamorphism
 - anamorphism
+- hylomorphism
 - paramorphism
 
 Resources:

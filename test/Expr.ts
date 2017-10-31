@@ -1,6 +1,12 @@
 import { Fix, fix } from '../src'
 import { Functor } from 'fp-ts/lib/Functor'
 
+declare module 'fp-ts/lib/HKT' {
+  interface URI2HKT<A> {
+    Expr: ExprF<A>
+  }
+}
+
 export const URI = 'Expr'
 
 export type URI = typeof URI

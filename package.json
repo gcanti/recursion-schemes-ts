@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/gcanti/recursion-schemes-ts",
   "dependencies": {
-    "fp-ts": "^0.4.0"
+    "fp-ts": "^0.6.1"
   },
   "devDependencies": {
     "@types/mocha": "2.2.38",
@@ -34,7 +34,7 @@
     "ts-node": "^3.2.0",
     "tslint": "4.4.2",
     "tslint-config-standard": "4.0.0",
-    "typescript": "2.4.1"
+    "typescript": "2.6.0-rc"
   },
   "tags": ["typescript", "recursion-schemes", "functional-programming"],
   "keywords": ["typescript", "recursion-schemes", "functional-programming"]
