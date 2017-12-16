@@ -21,7 +21,11 @@ export function cata<F extends HKT2S>(F: Functor<F>): <L, A>(algebra: (fa: HKT2A
 export function cata<F extends HKTS>(F: Functor<F>): <A>(algebra: (fa: HKTAs<F, A>) => A) => (term: Fix<F>) => A
 export function cata<F>(F: Functor<F>): <A>(algebra: Algebra<F, A>) => (term: Fix<F>) => A
 export function cata<F>(F: Functor<F>): <A>(algebra: Algebra<F, A>) => (term: Fix<F>) => A {
-  return algebra => compose(algebra, x => F.map(cata(F)(algebra), x), unfix)
+  // optimization as described in https://japgolly.blogspot.it/2017/12/practical-awesome-recursion-ch-02.html
+  return <A>(algebra: Algebra<F, A>) =>
+    function self(term): A {
+      return algebra(F.map(self, unfix(term)))
+    }
 }
 
 export type Coalgebra<F, A> = (a: A) => HKT<F, A>
