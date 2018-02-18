@@ -1,5 +1,5 @@
 import { Fix, fix } from '../src'
-import { Functor } from 'fp-ts/lib/Functor'
+import { Functor1 } from 'fp-ts/lib/Functor'
 
 declare module 'fp-ts/lib/HKT' {
   interface URI2HKT<A> {
@@ -13,8 +13,10 @@ export type URI = typeof URI
 
 export class Const<A> {
   readonly _tag: 'Const' = 'Const'
-  readonly _A: A
-  readonly _URI: URI
+  // prettier-ignore
+  readonly '_A': A
+  // prettier-ignore
+  readonly '_URI': URI
   constructor(public value: number) {}
   map<B>(f: (a: A) => B): ExprF<B> {
     return this as any
@@ -23,8 +25,10 @@ export class Const<A> {
 
 export class Add<A> {
   readonly _tag: 'Add' = 'Add'
-  readonly _A: A
-  readonly _URI: URI
+  // prettier-ignore
+  readonly '_A': A
+  // prettier-ignore
+  readonly '_URI': URI
   constructor(public x: A, public y: A) {}
   map<B>(f: (a: A) => B): ExprF<B> {
     return new Add(f(this.x), f(this.y))
@@ -33,8 +37,10 @@ export class Add<A> {
 
 export class Mul<A> {
   readonly _tag: 'Mul' = 'Mul'
-  readonly _A: A
-  readonly _URI: URI
+  // prettier-ignore
+  readonly '_A': A
+  // prettier-ignore
+  readonly '_URI': URI
   constructor(public x: A, public y: A) {}
   map<B>(f: (a: A) => B): ExprF<B> {
     return new Mul(f(this.x), f(this.y))
@@ -57,9 +63,9 @@ export type ExprF<A> = Const<A> | Add<A> | Mul<A>
 
 export type Expr = Fix<URI>
 
-export const functorExpr: Functor<URI> = {
+export const functorExpr: Functor1<URI> = {
   URI,
-  map<A, B>(f: (a: A) => B, expr: ExprF<A>): ExprF<B> {
+  map<A, B>(expr: ExprF<A>, f: (a: A) => B): ExprF<B> {
     return expr.map(f)
   }
 }

@@ -1,5 +1,5 @@
 import { Fix, fix } from '../src'
-import { Functor } from 'fp-ts/lib/Functor'
+import { Functor1 } from 'fp-ts/lib/Functor'
 
 declare module 'fp-ts/lib/HKT' {
   interface URI2HKT<A> {
@@ -14,8 +14,10 @@ export type URI = typeof URI
 export class Zero<A> {
   static value = new Zero<any>()
   readonly _tag: 'Zero' = 'Zero'
-  readonly _A: A
-  readonly _URI: URI
+  // prettier-ignore
+  readonly '_A': A
+  // prettier-ignore
+  readonly '_URI': URI
   private constructor() {}
   map<B>(f: (a: A) => B): NatF<B> {
     return this as any
@@ -24,8 +26,10 @@ export class Zero<A> {
 
 export class Succ<A> {
   readonly _tag: 'Succ' = 'Succ'
-  readonly _A: A
-  readonly _URI: URI
+  // prettier-ignore
+  readonly '_A': A
+  // prettier-ignore
+  readonly '_URI': URI
   constructor(public value: A) {}
   map<B>(f: (a: A) => B): NatF<B> {
     return new Succ(f(this.value))
@@ -42,9 +46,9 @@ export function succ(n: Nat): Nat {
   return fix(new Succ(n))
 }
 
-export const functorNat: Functor<URI> = {
+export const functorNat: Functor1<URI> = {
   URI,
-  map<A, B>(f: (a: A) => B, nat: NatF<A>): NatF<B> {
+  map<A, B>(nat: NatF<A>, f: (a: A) => B): NatF<B> {
     return nat.map(f)
   }
 }
